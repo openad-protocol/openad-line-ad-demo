@@ -34,6 +34,9 @@ module.exports = (RESETENV) => {
       hot: true,
       // inline: true,
       server: BuildENV.server,
+	  static: {
+        serveIndex: false,
+      },
       client: {
         reconnect: false,
         progress: false,

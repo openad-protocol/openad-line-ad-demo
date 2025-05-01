@@ -29,10 +29,15 @@
         </li>
         <li>
           <van-button @click="handle" type="primary">
-            Log In By Line Liff SDK
+            Log In By Line Liff SDK To Show Liff Demo
           </van-button>
         </li>
       </template>
+      <li v-for="(item,index) in newPaths" :key="index">
+        <van-button type="primary" @click="router.push(item.path)">
+          {{ item.desc }}
+        </van-button>
+      </li>
     </ul>
   </div>
   <!---->
@@ -53,6 +58,10 @@ export default defineComponent({
       { path: '/SinglePage/liffInterface', desc: 'load banner ad with liff and interface...' },
       { path: '/SinglePage/liffInteractive', desc: 'load interactive ad with liff...' },
     ]);
+
+    const newPaths = ref([{ path: '/SinglePage/web3Provider', desc: 'load banner ad with web3 provider...' },
+      { path: '/SinglePage/web3Api', desc: 'load banner ad with web3 api...' },
+      { path: '/SinglePage/webApi', desc: 'load banner ad with web api...' }]);
 
     const liffId = '2007231647-qVXDQlb6';
     const result = ref(null);
@@ -83,7 +92,7 @@ export default defineComponent({
       window.liff.login()
     }
 
-    return { router, paths, result, login, handle };
+    return { router, paths, result, login, handle, newPaths };
   },
 });
 </script>

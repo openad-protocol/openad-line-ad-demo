@@ -36,11 +36,11 @@ export default defineComponent({
     const liffId = '2007231647-qVXDQlb6';
     const result = ref(null);
     const router = useRouter();
-    /** If your web application is a TMA (Telegram Mini App), please use the following code. **/
+    /** If your web application is LMA or LWA, please use the following codes. **/
     const lineAd = reactive({
       adInfo: {
-        zoneId: 158, // int,  This is an example zoneId, please get your own code parameters
-        publisherId: 49, // int, This is an example publisherId, please get your own code parameters
+        zoneId: 427, // int,  This is an example zoneId, please get your own code parameters
+        publisherId: 1, // int, This is an example publisherId, please get your own code parameters
       },
       adParams: {
         line: {
@@ -48,7 +48,7 @@ export default defineComponent({
           liffId: '2007231647-qVXDQlb6', // when type = LMA / LWA, liffId is required
           prototype: window.liff, // when type = LMA / LWA, prototype is required
         },
-        wallet: { // If you have a web3 wallet components
+        wallet: { // If you have a web3 wallet components, Optional
           type: '', // eth: eth wallet, kaia: line wallet, ton: ton wallet;
           provider: null, // here is a provider object after wallet initialization.
           components: '', // web3 wallet components name
@@ -93,22 +93,6 @@ export default defineComponent({
         // eslint-disable-next-line no-use-before-define
         await CallBackLogInfo(lineAd.adInfo);
       }
-      /**
-       * code: 0, data: {  } // openAD.banner object and values
-       * code: -1, msg: 'please login by line first!'
-       * code: -2, msg: 'invalid liffId'
-       * code: -3, msg: 'invalid LWA access token!'
-       * code: -4, msg: 'liff sdk invalid profile response'
-       * code: -5, msg: 'liff sdk failed to parse profile response'
-       * code: -6, msg: 'liff sdk cannot detect LINE WebView API'
-       * code: -7, msg: 'liff sdk getProfile error: ...
-       * code: -8, msg: 'invalid userId',
-       * code: -9, msg: 'invalid liff sdk',
-       * code: -21, msg: 'get openAD ads error!'
-       * code: -101, msg: 'Ajax Request 404 !'
-       * code: -102, msg: 'Ajax Request Timeout !'
-       * code: -103, msg: 'Ajax Request Error !'
-       **/
     }
 
     const CallBackLogInfo = (adInfo) => {
@@ -119,14 +103,6 @@ export default defineComponent({
         }else{
           console.log(res.msg);
         }
-        /**
-         * code: 0, msg: 'send log info successfully'
-         * code: -1, msg: 'can not find resource'
-         * code: -2, msg: 'send log info failed'
-         * code: -101, msg: 'Ajax Request 404 !'
-         * code: -102, msg: 'Ajax Request Timeout !'
-         * code: -103, msg: 'Ajax Request Error !'
-         **/
       });
     }
 

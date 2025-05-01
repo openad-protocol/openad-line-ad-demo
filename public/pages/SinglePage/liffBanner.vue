@@ -29,11 +29,11 @@ export default defineComponent({
     const liffId = '2007231647-qVXDQlb6';
     const result = ref(null);
     const router = useRouter();
-    /** If your web application is LMA or LWA, please use the following code. **/
+    /** If your web application is LMA or LWA, please use the following codes. **/
     const lineAd = reactive({
       adInfo: {
-        zoneId: 158, // int,  This is an example zoneId, please get your own code parameters
-        publisherId: 49, // int, This is an example publisherId, please get your own code parameters
+        zoneId: 427, // int,  This is an example zoneId, please get your own code parameters
+        publisherId: 1, // int, This is an example publisherId, please get your own code parameters
       },
       adParams: {
         line: {
@@ -41,7 +41,7 @@ export default defineComponent({
           liffId: '2007231647-qVXDQlb6', // when type = LMA / LWA, liffId is required
           prototype: window.liff, // when type = LMA / LWA, prototype is required
         },
-        wallet: { // If you have a web3 wallet components
+        wallet: { // If you have a web3 wallet components, Optional
           type: '', // eth: eth wallet, kaia: line wallet, ton: ton wallet;
           provider: null, // here is a provider object after wallet initialization.
           components: '', // web3 wallet components name
