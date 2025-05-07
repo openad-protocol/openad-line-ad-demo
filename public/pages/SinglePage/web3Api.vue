@@ -30,7 +30,7 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const { proxy } = getCurrentInstance();
-    /** If your web application is a web3 app and wallet was created by backend, please use the following code. **/
+    /** If your web application is a web3 app and wallet was created by backend, please use the following codes. **/
     const lineAd = reactive({
       adInfo: {
         zoneId: 427, // int,  This is an example zoneId, please get your own code parameters

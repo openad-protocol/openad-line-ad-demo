@@ -19,7 +19,7 @@
 </template>
 <script>
 import { Button } from 'vant';
-import { defineComponent, reactive, onMounted, nextTick, ref } from 'vue';
+import { defineComponent, reactive, onMounted, nextTick, ref, getCurrentInstance } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default defineComponent({
@@ -31,6 +31,7 @@ export default defineComponent({
     const liffId = '2007231647-qVXDQlb6';
     const result = ref(null);
     const router = useRouter();
+    const { proxy } = getCurrentInstance();
     /** If your web application is LMA or LWA, please use the following codes. **/
     const lineAd = reactive({
       adInfo: {
@@ -113,6 +114,10 @@ export default defineComponent({
         // click: click Ad completed, include viewed Ad, not manually closed ads; client side needs to issue rewards level 2.
         // close: user manually closed ads. client side can not get any rewards.
         // If you want to perform different steps based on different shutdown states, please write the code here.
+        if(e === 'view'){
+          // eslint-disable-next-line no-use-before-define
+          viewReward();
+        }
       },
       // indicates clicked and jumps
       onAdClick: (e) => {
@@ -120,8 +125,18 @@ export default defineComponent({
       },
     };
 
+    const clickReward = async () => {
+      let res = await proxy.$axios.get(window.location.origin+window.location.pathname+proxy.$AppEnv.staticURL+'static/json/token.json');
+      console.log('clickReward', res);
+    }
+
+    const viewReward = async () => {
+      let res = await proxy.$axios.get(window.location.origin+window.location.pathname+proxy.$AppEnv.staticURL+'static/json/wallet.json');
+      console.log('viewReward', res);
+    }
+
     const Render = () => {
-      window.OpenADLineJsSDK.interactive.getRender({ adInfo: lineAd.adInfo, cb });
+      window.OpenADLineJsSDK.interactive.getRender({ adInfo: lineAd.adInfo, cb, clickReward });
     }
 
     return { router, Render, lineAd, result };

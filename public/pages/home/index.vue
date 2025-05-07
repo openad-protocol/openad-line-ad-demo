@@ -61,7 +61,7 @@ export default defineComponent({
 
     const newPaths = ref([{ path: '/SinglePage/web3Provider', desc: 'load banner ad with web3 provider...' },
       { path: '/SinglePage/web3Api', desc: 'load banner ad with web3 api...' },
-      { path: '/SinglePage/webApi', desc: 'load banner ad with web api...' }]);
+      { path: '/SinglePage/webApi', desc: 'load interactive ad with web api...' }]);
 
     const liffId = '2007231647-qVXDQlb6';
     const result = ref(null);

@@ -1,16 +1,8 @@
 <template>
   <div class="singlePage WebApi MFlex">
-    <h2>This page is a demo for web Api mode to load OpenAd banner ad! </h2>
-    <div v-if="lineAd.banner.resource_url && lineAd.banner.width && lineAd.banner.height" class="openADJsSDKBanner lineAd">
-      <a href="javascript:void(0)" class="Flex" rel="noopener nofollow" @click="CallBackClickInfo(lineAd.adInfo)">
-        <img
-          :src="lineAd.banner.resource_url"
-          style="max-width: 100%;max-height: 100%;object-fit: contain;"
-        >
-      </a>
-    </div>
-    <van-button v-else type="primary" @click="handleAction('getLineAD')">
-      Get Line AD
+    <h2>This page is a demo for web Api mode to load OpenAd Interactive ad! </h2>
+    <van-button type="primary" @click="handleAction('getLineAD')">
+      Get Line Interactive AD
     </van-button>
     <van-button type="primary" @click="router.push('/')">
       Go Home
@@ -19,7 +11,7 @@
 </template>
 <script>
 import { Button } from 'vant';
-import { defineComponent, reactive, nextTick, getCurrentInstance } from 'vue';
+import { defineComponent, reactive, getCurrentInstance } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default defineComponent({
@@ -33,7 +25,7 @@ export default defineComponent({
     /** If your web application is a web app, please use the following codes. **/
     const lineAd = reactive({
       adInfo: {
-        zoneId: 427, // int,  This is an example zoneId, please get your own code parameters
+        zoneId: 428, // int,  This is an example zoneId, please get your own code parameters
         publisherId: 1, // int, This is an example publisherId, please get your own code parameters
       },
       adParams: {
@@ -51,47 +43,81 @@ export default defineComponent({
         userId: 'vincent', // the id of the current user in your APP
         displayName: 'vincent', // the firstName / lastName / username / userId  of the current user in your APP,
       },
-      banner: {
-        'width': null,
-        'type': 'banner',
-        'height': null,
-        'resource_id': null,
-        'resource_url': '',
-        'resource_text': '',
-        'resource_desc': '',
-      },
     });
 
     const handleAction = async(type) => {
       if(type === 'getLineAD'){
-        let res = await window.OpenADLineJsSDK.banner.get({ adInfo: lineAd.adInfo, adParams: lineAd.adParams, userInfo: lineAd.userInfo });
-        console.log('getLineAD', JSON.stringify(res));
-        if(res.code === 0){
-          lineAd.banner = res.data;
-          // eslint-disable-next-line no-use-before-define
-          await CallBackLogInfo(lineAd.adInfo);
-        }
+        window.OpenADLineJsSDK.interactive.init({ ...lineAd }).then(res => {
+          lineAd.hasAD = res.code === 0;
+          if(res.code === 0){
+            // eslint-disable-next-line no-use-before-define
+            Render();
+          }
+          // hasAD = true, you can callback Render function, user can load an interactive ad;
+          // hasAD = false, you can't callback Render function, user can't load an interactive ad;
+        });
       }
     }
 
-    const CallBackLogInfo = (adInfo) => {
-      nextTick(async() => {
-        let res = await window.OpenADLineJsSDK.banner.log(adInfo);
-        if(res.code === 0){
-          console.log(res.msg);
-        }else{
-          console.log(res.msg);
+    const cb = {
+      // indicates load ad resource from OpenAD platform, false will be returned if there is no resource to be loaded for the publisher slot/zone
+      onAdResourceLoad: (e) => {
+        console.log('onAdResourceLoad', e);  // e = true / false
+      },
+      // indicates the interactive ad is opening
+      onAdOpening: (e) => {
+        console.log('onAdOpening', e); // e = true / false
+      },
+      // indicates the interactive ad is opened,
+      onAdOpened: (e) => {
+        console.log('onAdOpened', e);  // e = true / false
+      },
+      // indicates the interactive ad task is finished, the task is defined by advertiser, return task status
+      // judgment of issuing rewards, use this to return
+      onAdTaskFinished: (e) => {
+        console.log('onAdTaskFinished', e);  // e = true / false
+      },
+      // indicates the interactive ad is closing
+      onAdClosing: (e) => {
+        console.log('onAdClosing', e);  // e = true / false
+      },
+      // indicates the interactive ad is closed
+      onAdClosed: (e) => {
+        console.log('onAdClosed', e);  // e = view / click / close
+        // view: viewed Ad completed, not clicked, not manually closed ads; client side needs to issue rewards level 1.
+        // click: click Ad completed, include viewed Ad, not manually closed ads; client side needs to issue rewards level 2.
+        // close: user manually closed ads. client side can not get any rewards.
+        // If you want to perform different steps based on different shutdown states, please write the code here.
+        if(e === 'view'){
+          // eslint-disable-next-line no-use-before-define
+          viewReward();
         }
-      });
+        if(e === 'click'){
+          // eslint-disable-next-line no-use-before-define
+          clickReward();
+        }
+      },
+      // indicates clicked and jumps
+      onAdClick: (e) => {
+        console.log('onAdClick', e);  // e = true / false
+      },
+    };
+
+    const clickReward = async () => {
+      let res = await proxy.$axios.get(window.location.origin+window.location.pathname+proxy.$AppEnv.staticURL+'static/json/token.json');
+      console.log('clickReward', res);
     }
 
-    const CallBackClickInfo = (adInfo) => {
-      window.OpenADLineJsSDK.banner.click(adInfo);
-      // SDK will open a new app by the above function;
-      // No Callback, if you want to do sth, you should use yourself functions or methods;
+    const viewReward = async () => {
+      let res = await proxy.$axios.get(window.location.origin+window.location.pathname+proxy.$AppEnv.staticURL+'static/json/wallet.json');
+      console.log('viewReward', res);
     }
 
-    return { router, lineAd, CallBackClickInfo, handleAction };
+    const Render = () => {
+      window.OpenADLineJsSDK.interactive.getRender({ adInfo: lineAd.adInfo, cb });
+    }
+
+    return { router, lineAd, handleAction };
   },
 });
 </script>

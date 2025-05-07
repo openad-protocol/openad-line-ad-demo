@@ -15,9 +15,6 @@ module.exports = () => {
     context: path.resolve(__dirname, '../'),
     entry: './' + config.build.sysApp + '/main.js',
     stats: 'errors-warnings',
-    externals: {
-      axios: 'axios',
-    },
     output: {
       filename: 'assets/js/[name].[chunkhash].js',
       chunkFilename: 'assets/js/[name].[chunkhash].js',

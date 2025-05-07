@@ -16,6 +16,7 @@
   "dependencies": {
     "@reown/appkit": "^1.7.3",
     "@reown/appkit-adapter-wagmi": "^1.7.3",
+    "axios": "^1.9.0",
     "buffer": "^6.0.3",
     "qr": "^0.4.2",
     "qs": "^6.14.0",
@@ -36,6 +37,7 @@
     "@babel/runtime": "^7.26.9",
     "@babel/runtime-corejs3": "^7.26.9",
     "@soda/friendly-errors-webpack-plugin": "^1.8.1",
+    "@vant/auto-import-resolver": "^1.2.1",
     "@vue/compiler-sfc": "^3.5.13",
     "@vueuse/core": "^12.7.0",
     "autoprefix": "^1.0.1",
@@ -74,7 +76,6 @@
     "unplugin-vue-components": "^28.4.1",
     "unplugin-vue-define-options": "^3.0.0-alpha.0",
     "unplugin-vue-setup-extend-plus": "^1.0.1",
-    "@vant/auto-import-resolver": "^1.2.1",
     "vue-loader": "^17.4.2",
     "webpack": "^5.98.0",
     "webpack-bundle-analyzer": "^4.10.2",
